@@ -1,7 +1,7 @@
 import * as React from 'react';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { AppProvider } from '@toolpad/core/react-router-dom';
+import { NotificationsProvider } from '@toolpad/core/useNotifications';
+import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity'; import { AppProvider } from '@toolpad/core/react-router-dom';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Navigation, Session } from '@toolpad/core';
 import { SessionContext } from './SessionContext';
@@ -9,17 +9,20 @@ import { createTheme } from '@mui/material/styles';
 
 const NAVIGATION: Navigation = [
   {
-    title: 'Dashboard',
-    icon: <DashboardIcon />,
+    title: '',
+    icon: <CurrencyBitcoinIcon />,
   },
   {
     segment: 'account',
-    title: 'My Account',
-    icon: <ShoppingCartIcon />,
+    title: '',
+    icon: <PermIdentityIcon />,
   },
 ];
 
 const newTheme = createTheme({
+  typography: {
+    fontFamily: 'Montserrat, sans-serif',
+  },
   cssVariables: {
     colorSchemeSelector: 'data-toolpad-color-scheme',
   },
@@ -44,27 +47,29 @@ export default function App() {
   const navigate = useNavigate();
 
   const signIn = React.useCallback(() => {
-    navigate('/sign-in');
+    navigate('/login');
   }, [navigate]);
 
   const signOut = React.useCallback(() => {
     setSession(null);
-    navigate('/sign-in');
+    navigate('/login');
   }, [navigate]);
 
   const sessionContextValue = React.useMemo(() => ({ session, setSession }), [session, setSession]);
 
   return (
-    <SessionContext.Provider value={sessionContextValue}>
-      <AppProvider
-        navigation={NAVIGATION}
-        branding={BRANDING}
-        theme={newTheme}
-        session={session}
-        authentication={{ signIn, signOut }}
-      >
-        <Outlet />
-      </AppProvider>
-    </SessionContext.Provider>
+    <NotificationsProvider>
+      <SessionContext.Provider value={sessionContextValue}>
+        <AppProvider
+          navigation={NAVIGATION}
+          branding={BRANDING}
+          theme={newTheme}
+          session={session}
+          authentication={{ signIn, signOut }}
+        >
+          <Outlet />
+        </AppProvider>
+      </SessionContext.Provider>
+    </NotificationsProvider>
   );
 }

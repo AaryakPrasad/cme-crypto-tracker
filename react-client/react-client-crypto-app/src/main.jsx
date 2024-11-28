@@ -4,9 +4,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css'
 import App from './App'
 import Layout from './layout/dashboard';
-import DashboardPage from './pages/index';
 import AccountPage from './pages/account';
-import SignInPage from './pages/signin';
+import Login from './pages/login';
+import Signup from './pages/signup';
+import CryptoPage from './pages/CryptoPage';
 
 
 const router = createBrowserRouter([
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/',
-            Component: DashboardPage,
+            Component: CryptoPage,
           },
           {
             path: '/account',
@@ -28,15 +29,17 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: '/sign-in',
-        Component: SignInPage,
+        path: '/login',
+        Component: Login,
       },
+      {
+        path: '/signup',
+        Component: Signup,
+      }
     ],
   },
 ]);
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
+  <RouterProvider router={router} />
 )
