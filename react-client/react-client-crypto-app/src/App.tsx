@@ -54,6 +54,7 @@ export default function App() {
   const signOut = React.useCallback(() => {
     setSession(null);
     window.sessionStorage.removeItem('session');
+    localStorage.removeItem('session');
     navigate('/');
   }, [navigate]);
 

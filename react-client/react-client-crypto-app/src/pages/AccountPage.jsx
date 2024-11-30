@@ -114,7 +114,7 @@ export default function AccountPage() {
 
 
 
-    const session = JSON.parse(localStorage.getItem('session'));
+    const session = JSON.parse(window.sessionStorage.getItem('session'));
     const fetchAlerts = async () => {
         try {
             const response = await fetch(`http://localhost:8080/api/alerts/${session.user.id}`, {
