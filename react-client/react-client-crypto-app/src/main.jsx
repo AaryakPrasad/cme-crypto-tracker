@@ -8,6 +8,7 @@ import Signup from './pages/SignupPage';
 import CryptoPage from './pages/CryptoPage';
 import LandingPage from './pages/LandingPage';
 import Layout from './layout/dashboard';
+import NotFoundPage from './pages/NotFoundPage';
 
 
 const router = createBrowserRouter([
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: '/signup',
         Component: Signup,
+      },
+      {
+        path: '*',
+        Component: NotFoundPage
       }
     ],
   },

@@ -57,12 +57,7 @@ export default function AccountPage() {
     const [editingAlert, setEditingAlert] = useState(null);
     const [editForm, setEditForm] = useState({ threshold: '', condition: 'greater' });
     const notifications = useNotifications();
-    const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem('session');
-        navigate('/login');
-    };
 
     const handleEdit = (alert) => {
         setEditingAlert(alert.id);
@@ -219,16 +214,6 @@ export default function AccountPage() {
                         </Typography>
 
                     </Grid2>
-                    <Grid2>
-                        <Button
-                            variant="outlined"
-                            color="error"
-                            startIcon={<LogoutIcon />}
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </Button>
-                    </Grid2>
                 </Grid2>
             </Paper>
 
@@ -238,7 +223,7 @@ export default function AccountPage() {
                 Settings
             </Typography>
             <Stack>
-                <FormControlLabel
+                <FormControlLabel sx={{ mb: 2 }}
                     control={
                         <Checkbox
                             checked={persistAlerts}

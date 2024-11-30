@@ -52,9 +52,7 @@ const Signup = () => {
 
             // Update session context
             setSession(sessionData);
-
-            // Store in localStorage for persistence
-            localStorage.setItem('session', JSON.stringify(sessionData));
+            window.sessionStorage.setItem('session', JSON.stringify(sessionData));
 
             navigate('/app/dashboard');
         } catch (err) {

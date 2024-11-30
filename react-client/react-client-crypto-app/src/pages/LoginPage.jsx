@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSession } from '../SessionContext';
 import { useSessionStorageState } from '@toolpad/core';
@@ -55,8 +55,7 @@ const Login = () => {
             setSessionData(sessionData);
 
             window.sessionStorage.setItem('session', JSON.stringify(sessionData));
-            // Store in localStorage for persistence
-            localStorage.setItem('session', JSON.stringify(sessionData));
+
 
 
             navigate('/app/dashboard');

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
@@ -9,7 +8,7 @@ export default function Layout() {
     const location = useLocation();
 
 
-    if (!localStorage.getItem('session')) {
+    if (!window.sessionStorage.getItem('session') && !session) {
         // Add the `callbackUrl` search parameter
         const redirectTo = `/login?callbackUrl=${encodeURIComponent(location.pathname)}`;
 
@@ -17,8 +16,8 @@ export default function Layout() {
     }
 
     return (
-        <DashboardLayout>
-            <PageContainer>
+        <DashboardLayout defaultSidebarCollapsed>
+            <PageContainer title='' breadcrumbs={[]}>
                 <Outlet />
             </PageContainer>
         </DashboardLayout>

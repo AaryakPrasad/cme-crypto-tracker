@@ -161,8 +161,7 @@ export function CryptoDialog({ open, onClose, payload: { crypto } }) {
         >
             <DialogTitle>{crypto.name} Details</DialogTitle>
             <DialogContent>
-                {/* <Stack spacing={4}> */}
-                <Grid container spacing={4}>
+                <Stack spacing={4}>
                     {/* Chart Section */}
                     <Grid item sx={{ width: '100%', height: 400 }}>
                         {loading ? (
@@ -174,85 +173,87 @@ export function CryptoDialog({ open, onClose, payload: { crypto } }) {
                                 options={chartOptions}
                                 series={chartSeries}
                                 type="candlestick"
-                                height={400}
+                                height='100%'
+                                width='100%'
                             />
                         )}
                     </Grid>
+                    <Grid container spacing={4}>
 
-                    {/* Market Data and Alert Section */}
-                    {/* Market Data */}
-                    <Grid item size={6} md={12}>
-                        <Paper sx={{ p: 4 }}>
-                            <Typography variant="h6" gutterBottom>Market Data</Typography>
-                            <Stack spacing={2}>
-                                <Box display="flex" justifyContent="space-between">
-                                    <Typography>Current Price:</Typography>
-                                    <Typography>${crypto.current_price.toLocaleString()}</Typography>
-                                </Box>
-                                <Box display="flex" justifyContent="space-between">
-                                    <Typography>24h Change:</Typography>
-                                    <Typography color={crypto.price_change_percentage_24h > 0 ? 'success.main' : 'error.main'}>
-                                        {crypto.price_change_percentage_24h.toFixed(2)}%
-                                    </Typography>
-                                </Box>
-                                <Box display="flex" justifyContent="space-between">
-                                    <Typography>Market Cap:</Typography>
-                                    <Typography>${crypto.market_cap.toLocaleString()}</Typography>
-                                </Box>
-                                <Box display="flex" justifyContent="space-between">
-                                    <Typography>Volume:</Typography>
-                                    <Typography>${crypto.total_volume.toLocaleString()}</Typography>
-                                </Box>
-                            </Stack>
-                        </Paper>
+                        {/* Market Data and Alert Section */}
+                        {/* Market Data */}
+                        <Grid item size={{ sm: 12, md: 6 }}>
+                            <Paper sx={{ p: 4 }}>
+                                <Typography variant="h6" gutterBottom>Market Data</Typography>
+                                <Stack spacing={2}>
+                                    <Box display="flex" justifyContent="space-between">
+                                        <Typography>Current Price:</Typography>
+                                        <Typography>${crypto.current_price.toLocaleString()}</Typography>
+                                    </Box>
+                                    <Box display="flex" justifyContent="space-between">
+                                        <Typography>24h Change:</Typography>
+                                        <Typography color={crypto.price_change_percentage_24h > 0 ? 'success.main' : 'error.main'}>
+                                            {crypto.price_change_percentage_24h.toFixed(2)}%
+                                        </Typography>
+                                    </Box>
+                                    <Box display="flex" justifyContent="space-between">
+                                        <Typography>Market Cap:</Typography>
+                                        <Typography>${crypto.market_cap.toLocaleString()}</Typography>
+                                    </Box>
+                                    <Box display="flex" justifyContent="space-between">
+                                        <Typography>Volume:</Typography>
+                                        <Typography>${crypto.total_volume.toLocaleString()}</Typography>
+                                    </Box>
+                                </Stack>
+                            </Paper>
+                        </Grid>
+
+                        {/* Alert Settings */}
+                        <Grid item size={{ sm: 12, md: 6 }}>
+                            <Paper sx={{ p: 3 }}>
+                                <Typography variant="h6" gutterBottom>Set Price Alert</Typography>
+                                <Stack spacing={2}>
+                                    <Select
+                                        value={alertCondition}
+                                        onChange={(e) => setAlertCondition(e.target.value)}
+                                    >
+                                        <MenuItem value="greater">Greater than</MenuItem>
+                                        <MenuItem value="less">Less than</MenuItem>
+                                    </Select>
+                                    <TextField
+                                        fullWidth
+                                        type="number"
+                                        placeholder="Enter price threshold"
+                                        value={alert}
+                                        onChange={(e) => {
+                                            const newValue = parseFloat(e.target.value);
+                                            const currentPrice = crypto.current_price;
+
+                                            let errorMessage = '';
+                                            if (alertCondition === 'greater' && newValue <= currentPrice) {
+                                                errorMessage = `Price must be greater than ${currentPrice}`;
+                                            } else if (alertCondition === 'less' && newValue >= currentPrice) {
+                                                errorMessage = `Price must be less than ${currentPrice}`;
+                                            }
+
+                                            setAlertError(errorMessage);
+                                            setAlert(e.target.value);
+                                        }}
+                                        error={Boolean(alertError)}
+                                        helperText={alertError}
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        fullWidth
+                                        onClick={handleCreateAlert}
+                                    >
+                                        Set Alert
+                                    </Button>
+                                </Stack>
+                            </Paper>
+                        </Grid>
                     </Grid>
-
-                    {/* Alert Settings */}
-                    <Grid item size={6} md={12}>
-                        <Paper sx={{ p: 3 }}>
-                            <Typography variant="h6" gutterBottom>Set Price Alert</Typography>
-                            <Stack spacing={2}>
-                                <Select
-                                    value={alertCondition}
-                                    onChange={(e) => setAlertCondition(e.target.value)}
-                                >
-                                    <MenuItem value="greater">Greater than</MenuItem>
-                                    <MenuItem value="less">Less than</MenuItem>
-                                </Select>
-                                <TextField
-                                    fullWidth
-                                    type="number"
-                                    placeholder="Enter price threshold"
-                                    value={alert}
-                                    onChange={(e) => {
-                                        const newValue = parseFloat(e.target.value);
-                                        const currentPrice = crypto.current_price;
-
-                                        let errorMessage = '';
-                                        if (alertCondition === 'greater' && newValue <= currentPrice) {
-                                            errorMessage = `Price must be greater than ${currentPrice}`;
-                                        } else if (alertCondition === 'less' && newValue >= currentPrice) {
-                                            errorMessage = `Price must be less than ${currentPrice}`;
-                                        }
-
-                                        setAlertError(errorMessage);
-                                        setAlert(e.target.value);
-                                    }}
-                                    error={Boolean(alertError)}
-                                    helperText={alertError}
-                                />
-                                <Button
-                                    variant="contained"
-                                    fullWidth
-                                    onClick={handleCreateAlert}
-                                >
-                                    Set Alert
-                                </Button>
-                            </Stack>
-                        </Paper>
-                    </Grid>
-                </Grid>
-                {/* </Stack> */}
+                </Stack>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Close</Button>

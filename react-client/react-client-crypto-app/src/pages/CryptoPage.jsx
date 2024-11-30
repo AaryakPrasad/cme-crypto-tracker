@@ -18,7 +18,8 @@ import {
     DialogContent,
     DialogActions,
     Button,
-    Stack
+    Stack,
+    Divider
 } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { InputAdornment } from '@mui/material';
@@ -60,7 +61,7 @@ const CryptoList = () => {
 
             // Track triggered alerts for email
             const triggeredAlerts = [];
-
+            triggeredAlerts.push(`Hi ${session.user.name}!\n\nThe following crypto alerts have been triggered:`);
             // Check each alert
             for (const alert of alerts) {
                 const crypto = cryptoData.find(c => c.id === alert.cryptoId);
@@ -187,18 +188,31 @@ const CryptoList = () => {
     }
 
     const GRID_SPACING = {
-        index: '10%',
-        coin: '20%',
-        price: '20%',
-        change: '20%',
-        marketCap: '20%',
-        // condition: '20%',
-        // threshold: '20%',
-        button: "10%"
+        // Adjust grid spacing for different breakpoints
+        xs: {
+            coin: '50%',
+            price: '50%',
+        },
+        sm: {
+            index: '10%',
+            coin: '30%',
+            price: '30%',
+            change: '30%',
+        },
+        md: {
+            index: '10%',
+            coin: '20%',
+            price: '20%',
+            change: '20%',
+            marketCap: '20%',
+            button: '10%'
+        }
     };
 
+    // In the return statement, update the Grid components:
+
     return (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
             <Typography variant="h4" gutterBottom>
                 All Cryptocurrencies
             </Typography>
@@ -217,46 +231,58 @@ const CryptoList = () => {
                 }}
                 sx={{ mb: 2 }}
             />
+
             {/* Header */}
-            <Grid container sx={{
-                backgroundColor: 'background.paper',
-                p: 2,
-                mb: 2,
-                borderRadius: 1,
-                alignItems: 'center'
-            }}>
-                <Grid item sx={{ width: GRID_SPACING.index }}>
-                    <Typography>#</Typography>
+            <Box sx={{ display: { xs: 'none', md: 'block' }, borderTop: 1, borderBottom: 1, mb: 2, borderColor: 'grey.500' }}>
+                <Grid container sx={{
+                    backgroundColor: 'background.paper',
+
+                    borderRadius: 1,
+                    alignItems: 'center'
+                }}>
+                    <Grid item sx={{ width: GRID_SPACING.md.index }}>
+                        <Typography>#</Typography>
+                    </Grid>
+                    <Grid item sx={{ width: GRID_SPACING.md.coin }}>
+                        <Typography>Coin</Typography>
+                    </Grid>
+                    <Grid item sx={{ width: GRID_SPACING.md.price }}>
+                        <Typography>Price</Typography>
+                    </Grid>
+                    <Grid item sx={{ width: GRID_SPACING.md.change }}>
+                        <Typography>24h Change</Typography>
+                    </Grid>
+                    <Grid item sx={{ width: GRID_SPACING.md.marketCap }}>
+                        <Typography>Market Cap</Typography>
+                    </Grid>
+                    <Grid item sx={{ width: GRID_SPACING.md.button }}>
+                        <IconButton
+                            onClick={handleRefresh}
+                            disabled={loading}
+                            color="primary"
+                            sx={{ ml: 3 }}
+                        >
+                            {loading ? <CircularProgress size={24} /> : <RefreshIcon />}
+                        </IconButton>
+                    </Grid>
                 </Grid>
-                <Grid item sx={{ width: GRID_SPACING.coin }}>
-                    <Typography>Coin</Typography>
-                </Grid>
-                <Grid item sx={{ width: GRID_SPACING.price }}>
-                    <Typography>Price</Typography>
-                </Grid>
-                <Grid item sx={{ width: GRID_SPACING.change }}>
-                    <Typography>24h Change</Typography>
-                </Grid>
-                <Grid item sx={{ width: GRID_SPACING.marketCap }}>
-                    <Typography>Market Cap</Typography>
-                </Grid>
-                <Grid item sx={{ width: GRID_SPACING.button }}>
-                    <IconButton
-                        onClick={handleRefresh}
-                        disabled={loading}
-                        color="primary"
-                        sx={{ ml: 3 }}
-                    >
-                        {loading ? <CircularProgress size={24} /> : <RefreshIcon />}
-                    </IconButton>
-                </Grid>
-            </Grid>
+            </Box>
+            {/* Refresh button for mobile */}
+            <Box sx={{ display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end', mb: 2 }}>
+                <IconButton
+                    onClick={handleRefresh}
+                    disabled={loading}
+                    color="primary"
+                >
+                    {loading ? <CircularProgress size={24} /> : <RefreshIcon />}
+                </IconButton>
+            </Box>
 
             {filteredCryptoData.map((crypto, index) => (
                 <Paper
                     key={crypto.id}
                     sx={{
-                        p: 2,
+                        p: { xs: 1, sm: 2 },
                         mb: 1,
                         cursor: 'pointer',
                         '&:hover': {
@@ -266,28 +292,52 @@ const CryptoList = () => {
                     onClick={() => handleCryptoClick(crypto)}
                 >
                     <Grid container sx={{ alignItems: 'center' }}>
-                        <Grid item sx={{ width: GRID_SPACING.index }}>
-                            <Typography>{index + 1}</Typography>
+                        {/* Mobile Layout */}
+                        <Grid container sx={{ display: { xs: 'flex', md: 'none' }, width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Grid item sx={{ width: GRID_SPACING.xs.coin, pr: 3 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                    <Avatar src={crypto.image} alt={crypto.name} sx={{ width: 24, height: 24 }} />
+                                    <Typography>{crypto.name}</Typography>
+                                </Box>
+                            </Grid>
+                            <Grid item sx={{ width: GRID_SPACING.xs.price }}>
+                                <Typography sx={{ textAlign: 'right' }} >${crypto.current_price.toLocaleString()}</Typography>
+                                <Typography sx={{
+                                    color: crypto.price_change_percentage_24h > 0 ? 'success.main' : 'error.main',
+                                    fontSize: '0.875rem',
+                                    textAlign: 'right'
+                                }}>
+                                    {crypto.price_change_percentage_24h.toFixed(2)}%
+                                </Typography>
+                            </Grid>
                         </Grid>
-                        <Grid item sx={{ width: GRID_SPACING.coin }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <Avatar src={crypto.image} alt={crypto.name} sx={{ width: 24, height: 24 }} />
-                                <Typography>{crypto.name}</Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item sx={{ width: GRID_SPACING.price }}>
-                            <Typography>${crypto.current_price.toLocaleString()}</Typography>
-                        </Grid>
-                        <Grid item sx={{ width: GRID_SPACING.change }}>
-                            <Typography sx={{
-                                color: crypto.price_change_percentage_24h > 0 ? 'success.main' : 'error.main'
-                            }}>
-                                {crypto.price_change_percentage_24h.toFixed(2)}%
-                            </Typography>
-                        </Grid>
-                        <Grid item sx={{ width: GRID_SPACING.marketCap }}>
-                            <Typography>${crypto.market_cap.toLocaleString()}</Typography>
-                        </Grid>
+
+
+                        {/* Desktop Layout */}
+                        <Box sx={{ display: { xs: 'none', md: 'flex' }, width: '100%' }}>
+                            <Grid item sx={{ width: GRID_SPACING.md.index }}>
+                                <Typography>{index + 1}</Typography>
+                            </Grid>
+                            <Grid item sx={{ width: GRID_SPACING.md.coin }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                    <Avatar src={crypto.image} alt={crypto.name} sx={{ width: 24, height: 24 }} />
+                                    <Typography>{crypto.name}</Typography>
+                                </Box>
+                            </Grid>
+                            <Grid item sx={{ width: GRID_SPACING.md.price }}>
+                                <Typography>${crypto.current_price.toLocaleString()}</Typography>
+                            </Grid>
+                            <Grid item sx={{ width: GRID_SPACING.md.change }}>
+                                <Typography sx={{
+                                    color: crypto.price_change_percentage_24h > 0 ? 'success.main' : 'error.main'
+                                }}>
+                                    {crypto.price_change_percentage_24h.toFixed(2)}%
+                                </Typography>
+                            </Grid>
+                            <Grid item sx={{ width: GRID_SPACING.md.marketCap }}>
+                                <Typography>${crypto.market_cap.toLocaleString()}</Typography>
+                            </Grid>
+                        </Box>
                     </Grid>
                 </Paper>
             ))}

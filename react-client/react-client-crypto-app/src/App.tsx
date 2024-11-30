@@ -10,12 +10,12 @@ import { createTheme } from '@mui/material/styles';
 const NAVIGATION: Navigation = [
   {
     segment: 'app/dashboard',
-    title: '',
+    title: 'Dashboard',
     icon: <CurrencyBitcoinIcon />,
   },
   {
     segment: 'app/account',
-    title: '',
+    title: 'My Account',
     icon: <PermIdentityIcon />,
   },
 ];
@@ -53,7 +53,8 @@ export default function App() {
 
   const signOut = React.useCallback(() => {
     setSession(null);
-    navigate('/login');
+    window.sessionStorage.removeItem('session');
+    navigate('/');
   }, [navigate]);
 
   const sessionContextValue = React.useMemo(() => ({ session, setSession }), [session, setSession]);
