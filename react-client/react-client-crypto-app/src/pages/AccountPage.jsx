@@ -237,25 +237,26 @@ export default function AccountPage() {
             <Typography variant="h4" gutterBottom>
                 Settings
             </Typography>
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={persistAlerts}
-                        onChange={(e) => setPersistAlerts(e.target.checked)}
-                    />
-                }
-                label="Keep alerts after price check (don't auto-delete)"
-            />
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={emailNotifications}
-                        onChange={(e) => setEmailNotifications(e.target.checked)}
-                    />
-                }
-                label="Send email notifications for triggered alerts"
-            />
-
+            <Stack>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={persistAlerts}
+                            onChange={(e) => setPersistAlerts(e.target.checked)}
+                        />
+                    }
+                    label="Keep alerts after price check (don't auto-delete)"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={emailNotifications}
+                            onChange={(e) => setEmailNotifications(e.target.checked)}
+                        />
+                    }
+                    label="Send email notifications for triggered alerts"
+                />
+            </Stack>
             <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
                 My Price Alerts
             </Typography>

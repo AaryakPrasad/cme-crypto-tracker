@@ -1,4 +1,4 @@
-package com.cme.spring.datajpa.payload;
+package com.cme.spring.datajpa.payload.request;
 
 import lombok.Data;
 

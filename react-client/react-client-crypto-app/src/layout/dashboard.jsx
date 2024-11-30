@@ -8,6 +8,7 @@ export default function Layout() {
     const { session } = useSession();
     const location = useLocation();
 
+
     if (!localStorage.getItem('session')) {
         // Add the `callbackUrl` search parameter
         const redirectTo = `/login?callbackUrl=${encodeURIComponent(location.pathname)}`;
@@ -16,8 +17,8 @@ export default function Layout() {
     }
 
     return (
-        <DashboardLayout defaultSidebarCollapsed>
-            <PageContainer breadcrumbs={[]}>
+        <DashboardLayout>
+            <PageContainer>
                 <Outlet />
             </PageContainer>
         </DashboardLayout>

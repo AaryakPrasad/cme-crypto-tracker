@@ -9,6 +9,7 @@ import { createTheme } from '@mui/material/styles';
 
 const NAVIGATION: Navigation = [
   {
+    segment: 'dashboard',
     title: '',
     icon: <CurrencyBitcoinIcon />,
   },
@@ -30,7 +31,7 @@ const newTheme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 600,
+      sm: 300,
       md: 600,
       lg: 1200,
       xl: 1536,

@@ -4,9 +4,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css'
 import App from './App'
 import Layout from './layout/dashboard';
-import AccountPage from './pages/account';
-import Login from './pages/login';
-import Signup from './pages/signup';
+import AccountPage from './pages/AccountPage';
+import Login from './pages/LoginPage';
+import Signup from './pages/SignupPage';
 import CryptoPage from './pages/CryptoPage';
 
 
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         Component: Layout,
         children: [
           {
-            path: '/',
+            path: '/dashboard',
             Component: CryptoPage,
           },
           {
