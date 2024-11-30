@@ -59,7 +59,7 @@ const Login = () => {
             localStorage.setItem('session', JSON.stringify(sessionData));
 
 
-            navigate('/');
+            navigate('/app/dashboard');
         } catch (err) {
             setError('Login failed. Please check your credentials.');
             console.error('Login error:', err);

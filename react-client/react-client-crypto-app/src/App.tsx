@@ -9,12 +9,12 @@ import { createTheme } from '@mui/material/styles';
 
 const NAVIGATION: Navigation = [
   {
-    segment: 'dashboard',
+    segment: 'app/dashboard',
     title: '',
     icon: <CurrencyBitcoinIcon />,
   },
   {
-    segment: 'account',
+    segment: 'app/account',
     title: '',
     icon: <PermIdentityIcon />,
   },

@@ -56,7 +56,7 @@ const Signup = () => {
             // Store in localStorage for persistence
             localStorage.setItem('session', JSON.stringify(sessionData));
 
-            navigate('/');
+            navigate('/app/dashboard');
         } catch (err) {
             setError('Signup failed. Please try again.');
             console.error('Signup error:', err);
